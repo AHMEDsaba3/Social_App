@@ -8,5 +8,5 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-Color defaultColor=Colors.deepPurpleAccent;
+Color defaultColor=Colors.blueAccent  ;
 String token='';
