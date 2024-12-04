@@ -9,6 +9,7 @@ import 'package:social_app/Pages/onBoarding_page.dart';
 import 'package:social_app/Style/theme.dart';
 import 'package:social_app/network/local/cache_helper.dart';
 import 'package:social_app/network/remote/dio_hellper.dart';
+import 'package:social_app/shared/AppCubit/appCubit.dart';
 import 'package:social_app/shared/BlocObserver.dart';
 import 'package:social_app/shared/Login_cubit/loginApp_cubit.dart';
 
@@ -20,10 +21,10 @@ void main() async{
   await CacheHelper.init();
   Widget widget;
   bool onBoarding=CacheHelper.getData(key: 'onBoarding')??false;
-  token=CacheHelper.getData(key: 'token')??'';
+  uId=CacheHelper.getData(key: 'uId')??'';
 
   if(onBoarding != false){
-    if(token != ''){
+    if(uId != ''){
       widget=MainPage();
     }else widget=LoginPage();
   }else widget=OnBoardingPage();
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create:(context) => AppLoginCubit(),),
+        BlocProvider(create: (context) => AppCubit()..getUserData(),)
       ],
       child: MaterialApp(
         title: 'Social App',

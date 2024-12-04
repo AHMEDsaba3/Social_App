@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,17 +30,18 @@ class _RegisterPageState extends State<RegisterPage> {
       create: (context) => AppRegisterCubit(),
       child: BlocConsumer<AppRegisterCubit,AppRegisterStates>(
         listener: (context, state) {
-          if (state is AppRegisterSuccessState) {
-              defaultFlutterToast(massage:'Register Success',state: ToastState.SUCCESS );
-              // CacheHelper.saveData(key: 'token', value: null).then((value) {
-              //   Navigator.pushReplacement(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => MainPage(),
-              //     ),
-              //   );
-              // },);
-              // token = state.loginModel.data!.token!;
+          if (state is AppUserCreateSuccessState) {
+            FirebaseAuth.instance.currentUser!.sendEmailVerification();
+            defaultFlutterToast(massage:'Register Success',state: ToastState.SUCCESS );
+              CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainPage(),
+                  ),
+                );
+              },);
+              uId = state.uId;
             } else if(state is AppRegisterErrorState) {
               defaultFlutterToast(massage:state.error,state: ToastState.ERROR );
             }
@@ -51,8 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
             body: SingleChildScrollView(
               child: Stack(
                 children: [
-                  Container(
-                    width: double.infinity,
+                  Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         Container(
                           width: widthR(350, context),
-                          height: heightR(742, context),
+                          height: heightR(550, context),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               boxShadow: [

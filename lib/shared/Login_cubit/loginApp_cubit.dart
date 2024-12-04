@@ -18,7 +18,7 @@ class AppLoginCubit extends Cubit<AppLoginStates> {
             print('--------------------------------');
             print(value.user!.email);
             print(value.user!.uid);
-            emit(AppLoginSuccessState());
+            emit(AppLoginSuccessState(value.user!.uid));
           },
         ).catchError((e){
           print(e.toString());

@@ -9,4 +9,4 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 Color defaultColor=Colors.blueAccent  ;
-String token='';
+var uId='';
