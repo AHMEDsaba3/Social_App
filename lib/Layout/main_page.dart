@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,30 +10,30 @@ import 'package:social_app/shared/AppCubit/appCubit.dart';
 import 'package:social_app/shared/AppCubit/appCubit_states.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({super.key});
+  MainPage({super.key});
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit,AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        AppCubit cubit=AppCubit.get(context);
         return Scaffold(
-          body: SafeArea(
-            child: Center(child:ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                onPressed: () {
-                  CacheHelper.removeData(key: 'uId').then((value) {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ),
-                          (Route<dynamic> route) => false,
-                    );
-                    defaultFlutterToast(massage: 'Sign out done successfully', state: ToastState.SUCCESS);
-                  },);
-                }, child: Text('Sign Out',style: TextStyle(color: Colors.white))),),
-          ),);
+          body: cubit.Screens[cubit.currentIndex],
+          bottomNavigationBar:  CurvedNavigationBar(
+            key: _bottomNavigationKey,
+            buttonBackgroundColor: secondColor,
+            backgroundColor: Colors.transparent,
+            animationCurve: Curves.easeIn,
+            items: cubit.bottomItem,
+            animationDuration: Duration(milliseconds: 600),
+            onTap: (index) {
+              cubit.changeBottomNavBar(index);
+            },
+          ),
+        );
         },
     );
   }

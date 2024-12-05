@@ -8,3 +8,5 @@ class GetUserDataErrorState extends AppStates{
   final String error;
   GetUserDataErrorState(this.error);
 }
+
+class ChangeIndexState extends AppStates{}

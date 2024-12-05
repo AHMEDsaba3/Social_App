@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Social App',
         theme:lightTheme,
+        debugShowCheckedModeBanner: false,
         home:widget,
       ),
     );

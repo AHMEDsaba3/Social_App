@@ -25,6 +25,9 @@ ThemeData darkTheme=ThemeData(
     )
 );
 ThemeData lightTheme=ThemeData(
+  iconTheme: IconThemeData(color: defaultIconColor),
+  iconButtonTheme: IconButtonThemeData(style: ButtonStyle(iconColor:WidgetStatePropertyAll(defaultIconColor))),
+  elevatedButtonTheme: ElevatedButtonThemeData(style:ButtonStyle(backgroundColor: WidgetStatePropertyAll(defaultIconColor)) ),
     appBarTheme: AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.black,
