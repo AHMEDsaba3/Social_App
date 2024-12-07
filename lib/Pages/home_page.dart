@@ -178,6 +178,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
+                Spacer(),
                 IconButton(
                     style: ButtonStyle(
                         iconSize: WidgetStatePropertyAll(20)),

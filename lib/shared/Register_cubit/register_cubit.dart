@@ -14,6 +14,9 @@ class AppRegisterCubit extends Cubit<AppRegisterStates> {
       {required String name,
       required String phone,
       required String email,
+      String? image,
+      String? bio,
+      String? cover,
       required String password}) {
     emit(AppRegisterLoadingState());
     FirebaseAuth.instance
@@ -22,7 +25,15 @@ class AppRegisterCubit extends Cubit<AppRegisterStates> {
       (value) {
         print(value.user!.email);
         print(value.user!.uid);
-        createUser(name: name, phone: phone, email: email, id: value.user!.uid);
+        createUser(
+            name: name,
+            phone: phone,
+            bio: bio ?? 'write your bio...',
+            image: image ??
+                'https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?t=st=1733384278~exp=1733387878~hmac=c1a4d14e798cf17e7e131b5d0125aac3a4928490ee3b44e289471cc469779ef1&w=996',
+            cover: cover??'https://img.freepik.com/free-photo/modern-futuristic-sci-fi-background_35913-2150.jpg?t=st=1733530672~exp=1733534272~hmac=5084f6dfba2cd40eebebc52438e8dcf7a2a50ffb33fefb1a3b910f4faae8f731&w=996',
+            email: email,
+            id: value.user!.uid);
       },
     ).catchError((e) {
       print(
@@ -36,9 +47,20 @@ class AppRegisterCubit extends Cubit<AppRegisterStates> {
       {required String name,
       required String phone,
       required String email,
+      required String image,
+      required String bio,
+      required String cover,
       required String id}) {
     emit(AppUserCreateLoadingState());
-    UserModel model = UserModel(email: email, phone: phone, id: id, name: name,isEmailVerified: false);
+    UserModel model = UserModel(
+        email: email,
+        phone: phone,
+        id: id,
+        bio: bio,
+        name: name,
+        cover: cover,
+        image: image,
+        isEmailVerified: false);
 
     FirebaseFirestore.instance
         .collection('users')

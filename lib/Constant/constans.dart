@@ -8,7 +8,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-Color defaultColor=Color(0xFFD0BCFF) ;
+Color defaultColor=Colors.white ;
+Color defaultTextColor=Colors.black ;
 Color secondColor=Colors.white;
 Color defaultIconColor=Color(0xFF3873E9);
 var uId='';

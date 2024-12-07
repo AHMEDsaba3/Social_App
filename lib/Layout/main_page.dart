@@ -25,7 +25,7 @@ class MainPage extends StatelessWidget {
           bottomNavigationBar:  CurvedNavigationBar(
             key: _bottomNavigationKey,
             buttonBackgroundColor: secondColor,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.black12,
             animationCurve: Curves.easeIn,
             items: cubit.bottomItem,
             animationDuration: Duration(milliseconds: 600),
