@@ -10,3 +10,15 @@ class GetUserDataErrorState extends AppStates{
 }
 
 class ChangeIndexState extends AppStates{}
+
+class pickProfileImageSuccessState extends AppStates{}
+class pickProfileImageErrorState extends AppStates{}
+class pickCoverImageSuccessState extends AppStates{}
+class pickCoverImageErrorState extends AppStates{}
+
+class UpdateUserProfileLoadingState extends AppStates{}
+class UpdateUserProfileSuccessState extends AppStates{}
+class UpdateUserProfileErrorState extends AppStates{
+  final String error;
+  UpdateUserProfileErrorState(this.error);
+}

@@ -7,6 +7,7 @@ import 'package:social_app/Constant/constans.dart';
 import 'package:social_app/Layout/main_page.dart';
 import 'package:social_app/Pages/login_page.dart';
 import 'package:social_app/network/local/cache_helper.dart';
+import 'package:social_app/shared/AppCubit/appCubit.dart';
 import 'package:social_app/shared/Register_cubit/register_cubit.dart';
 import 'package:social_app/shared/Register_cubit/register_states.dart';
 
@@ -40,6 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     builder: (context) => MainPage(),
                   ),
                 );
+                AppCubit.get(context).getUserData();
               },);
               uId = state.uId;
             } else if(state is AppRegisterErrorState) {
@@ -177,7 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: defaultColor),
+                                          backgroundColor: defaultIconColor),
                                       child: Text(
                                         'SignUp',
                                         style: TextStyle(color: Colors.white),

@@ -31,6 +31,7 @@ ThemeData lightTheme = ThemeData(
             textStyle: WidgetStatePropertyAll(TextStyle(color: Colors.black)))),
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
+          shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
             backgroundColor: WidgetStatePropertyAll(defaultIconColor))),
     appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(

@@ -1,70 +1,127 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/Constant/components.dart';
 import 'package:social_app/Constant/constans.dart';
+import 'package:social_app/Pages/add_post_page.dart';
 import 'package:social_app/Pages/notification_page.dart';
+import 'package:social_app/shared/AppCubit/appCubit.dart';
+import 'package:social_app/shared/AppCubit/appCubit_states.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   TextEditingController commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: secondColor,
-                    radius: 30,
-                    backgroundImage: NetworkImage(
-                        'https://img.freepik.com/free-photo/waist-up-portrait-handsome-serious-unshaven-male-keeps-hands-together-dressed-dark-blue-shirt-has-talk-with-interlocutor-stands-against-white-wall-self-confident-man-freelancer_273609-16320.jpg?t=st=1733384278~exp=1733387878~hmac=c1a4d14e798cf17e7e131b5d0125aac3a4928490ee3b44e289471cc469779ef1&w=996'),
-                  ),
-                  SizedBox(
-                    width: widthR(10, context),
-                  ),
-                  Text(
-                    'hi ahmed',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  Spacer(),
-                  CircleAvatar(
-                    backgroundColor: secondColor,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NotificationPage(),
-                            ));
-                      },
-                      icon: Icon(Icons.notifications_none),
+    return BlocConsumer<AppCubit,AppStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        AppCubit cubit=AppCubit.get(context);
+        if(cubit.model!=null) {
+          return Scaffold(
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5),
+                    child: Column(
+                      children: [
+                        Row(children: [
+                          Text(
+                            'Social App',
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .bodyLarge,
+                          ),
+                          Spacer(),
+                          CircleAvatar(
+                            backgroundColor: secondColor,
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          NotificationPage(),
+                                    ));
+                              },
+                              icon: Icon(Icons.notifications_none),
+                            ),
+                          )
+                        ],),
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: secondColor,
+                              radius: 25,
+                              backgroundImage: NetworkImage(
+                                  cubit.model?.image ?? ''),
+                            ),
+                            SizedBox(
+                              width: widthR(10, context),
+                            ),
+                            SizedBox(
+                              height: 40,
+                              width: widthR(260, context),
+                              child: TextButton(
+                                  style:
+                                  TextButton.styleFrom(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                                      alignment: Alignment.centerLeft),
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddPostPage(image: cubit.model?.image??'', name: cubit.model?.name??''),));
+                              }, child: Text('What is on your mind?..',style: TextStyle(
+                                color: Colors.grey
+                              ),)),
+                            ),
+                            Spacer(),
+                            CircleAvatar(
+                              backgroundColor: secondColor,
+                              child: IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            NotificationPage(),
+                                      ));
+                                },
+                                icon: Icon(Icons.post_add,color: Colors.grey,),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: heightR(20, context),
+                        ),
+                        ListView.separated(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return buildPost(context);
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(height: heightR(20, context),);
+                            },
+                            itemCount: 10)
+                      ],
                     ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: heightR(20, context),
-              ),
-              ListView.separated(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                return buildPost(context);
-              }, separatorBuilder: (context, index) {
-                return SizedBox(height: heightR(20, context),);
-              }, itemCount: 10)
-            ],
-          ),
-        ),
-      ),
-    ));
+                  ),
+                ),
+              ));
+        }else{
+          return Center(child: CircularProgressIndicator(),);
+        }
+      },
+    );
   }
 
   Widget buildPost(context){
@@ -94,11 +151,11 @@ class HomePage extends StatelessWidget {
                   children: [
                     Text(
                       'Ahmed sabaa',
-                      style: Theme.of(context).textTheme.labelMedium,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     Text(
                       '10/14/13',
-                      style: TextStyle(color: Colors.grey[500]),
+                      style: TextStyle(fontSize:10,color: Colors.grey[500]),
                     ),
                   ],
                 ),

@@ -6,6 +6,7 @@ import 'package:social_app/Constant/constans.dart';
 import 'package:social_app/Layout/main_page.dart';
 import 'package:social_app/Pages/register_page.dart';
 import 'package:social_app/network/local/cache_helper.dart';
+import 'package:social_app/shared/AppCubit/appCubit.dart';
 import 'package:social_app/shared/Login_cubit/loginApp_cubit.dart';
 import 'package:social_app/shared/Login_cubit/loginApp_states.dart';
 
@@ -38,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
             );
             },);
             uId = state.uId;
+            AppCubit.get(context).getUserData();
           } else if (state is AppLoginErrorState) {
             defaultFlutterToast(massage: state.error, state: ToastState.ERROR);
           }
@@ -141,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: defaultColor,
+                              backgroundColor: defaultIconColor,
                             ),
                             child: Text(
                               'Login',
