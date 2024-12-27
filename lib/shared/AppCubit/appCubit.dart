@@ -11,6 +11,7 @@ import 'package:social_app/Pages/chats_page.dart';
 import 'package:social_app/Pages/home_page.dart';
 import 'package:social_app/Pages/profile_page.dart';
 import 'package:social_app/Pages/setting_page.dart';
+import 'package:social_app/models/massage_model.dart';
 import 'package:social_app/models/user_model.dart';
 import 'package:social_app/shared/AppCubit/appCubit_states.dart';
 
@@ -127,6 +128,69 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  void sendMessage({
+    required String receiverID,
+    required String dateTime,
+    required String text,
+}){
+    MessageModel messageModel=MessageModel(
+      dateTime: dateTime,
+      receiverID: receiverID,
+      senderId: model?.id,
+      text: text
+    );
+    //set sender message
+    FirebaseFirestore.instance
+    .collection('users')
+    .doc(model?.id)
+    .collection('chats')
+    .doc(receiverID)
+    .collection('messages')
+    .add(messageModel.toMap())
+    .then((value) {
+      emit(sendMessageSuccessState());
+    },)
+    .catchError((e){
+      emit(sendMessageErrorState());
+    });
+
+    //set receiver message
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverID)
+        .collection('chats')
+        .doc(model?.id)
+        .collection('messages')
+        .add(messageModel.toMap())
+        .then((value) {
+      emit(sendMessageSuccessState());
+    },)
+        .catchError((e){
+      emit(sendMessageErrorState());
+    });
+  }
+
+  List<MessageModel> messages=[];
+  void getMessage(
+  {required String receiverId}
+      ){
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(model?.id)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+          messages=[];
+          event.docs.forEach((element) {
+            messages.add(MessageModel.fromJson(element.data()));
+            print(messages);
+          },);
+        },);
+    emit(getMessageSuccessState());
+  }
 
   void resetProfile() {
     model = null;

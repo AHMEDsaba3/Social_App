@@ -28,3 +28,8 @@ class UpdateUserProfileErrorState extends AppStates{
   final String error;
   UpdateUserProfileErrorState(this.error);
 }
+class sendMessageSuccessState extends AppStates{}
+class sendMessageErrorState extends AppStates{}
+
+class getMessageSuccessState extends AppStates{}
+class getMessageErrorState extends AppStates{}
