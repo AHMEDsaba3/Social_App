@@ -27,12 +27,14 @@ Widget defaultTextForm(
       IconData? sufIcon,
       InputBorder? borderStyle,
       bool ispassword = false,
+      FloatingLabelBehavior? floatingLabelBehavior,
       String? Function(String?)? validator,
       void Function(String)? onChangedFun,
       void Function(String)? onFieldSubmitted,
       Function()? suffixPressed,
       int? maxLine,
       double? radius,
+      Color? backgroundColor,
       double? widthRe,
       double? heightRe,
       bool readonly = false,
@@ -47,6 +49,7 @@ Widget defaultTextForm(
       keyboardType: keyboardType,
       onChanged: onChangedFun,
       validator: validator,
+      cursorHeight: 15,
       autovalidateMode:
       validator != null ? AutovalidateMode.onUserInteraction : null,
       controller: Controller,
@@ -60,7 +63,7 @@ Widget defaultTextForm(
               color: Color(0xff80000000),
               fontWeight: FontWeight.bold),
         ),
-        fillColor: Colors.white,
+        fillColor: backgroundColor ?? Colors.white,
         filled: true,
         border: borderStyle ?? OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(radius ?? 17))),
@@ -72,6 +75,8 @@ Widget defaultTextForm(
         suffixIcon: sufIcon != null
             ? IconButton(onPressed: suffixPressed, icon: Icon(sufIcon))
             : null,
+          floatingLabelBehavior: floatingLabelBehavior,
+          contentPadding: EdgeInsets.symmetric(horizontal: 10)
       ),
       readOnly: readonly == true ? true : false,
       focusNode: focusNode,
