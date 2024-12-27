@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/Constant/components.dart';
 import 'package:social_app/Constant/constans.dart';
+import 'package:social_app/Pages/chat_details_page.dart';
+import 'package:social_app/models/user_model.dart';
 import 'package:social_app/shared/AppCubit/appCubit.dart';
 import 'package:social_app/shared/AppCubit/appCubit_states.dart';
 
@@ -16,7 +18,7 @@ class ChatsPage extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         AppCubit cubit = AppCubit.get(context);
-        if(cubit.model!=null) {
+        if(cubit.model!=null && cubit.users.isNotEmpty) {
           return Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(
@@ -59,7 +61,7 @@ class ChatsPage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: horizontalUsers(context, cubit.users[index].image??''),
+                            child: horizontalUsers(context,cubit.users[index]),
                           );
                         },
                         separatorBuilder: (context, index) {
@@ -78,7 +80,7 @@ class ChatsPage extends StatelessWidget {
                       shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return verticaUsers(context, cubit.users[index].image??'', cubit.users[index].name ?? '');
+                          return verticaUsers(context, cubit.users[index]);
                         },
                         separatorBuilder: (context, index) => Padding(
                           padding:  EdgeInsets.symmetric(vertical: 10),
@@ -96,32 +98,39 @@ class ChatsPage extends StatelessWidget {
     );
   }
 
-  Widget horizontalUsers(context, String image) {
+  Widget horizontalUsers(context, UserModel user) {
     return InkWell(
-      onTap: () {},
-      child: CircleAvatar(
-        radius: sizeR(34, context),
-        backgroundColor: Colors.black,
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetailsPage(user: user,),));
+      },
+      child: Hero(
+        tag: user.id??'',
         child: CircleAvatar(
-          radius: sizeR(33, context),
-          backgroundColor: secondColor,
-          backgroundImage: NetworkImage(image),
+          radius: sizeR(34, context),
+          backgroundColor: Colors.black,
+          child: CircleAvatar(
+            radius: sizeR(33, context),
+            backgroundColor: secondColor,
+            backgroundImage: NetworkImage(user.image??''),
+          ),
         ),
       ),
     );
   }
-  Widget verticaUsers(context, String image,String name) {
+  Widget verticaUsers(context,UserModel user) {
     return  InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetailsPage(user: user,),));
+      },
       child: Row(
         children: [
           CircleAvatar(
             radius: sizeR(29, context),
             backgroundColor: secondColor,
-            backgroundImage: NetworkImage(image),
+            backgroundImage: NetworkImage(user.image??""),
           ),
           SizedBox(width: widthR(10, context),),
-          Text('$name',style: Theme.of(context).textTheme.bodyMedium,)
+          Text('${user.name}',style: Theme.of(context).textTheme.bodyMedium,)
         ],
       ),
     );

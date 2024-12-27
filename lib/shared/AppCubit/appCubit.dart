@@ -57,7 +57,7 @@ class AppCubit extends Cubit<AppStates> {
   List<UserModel> users=[];
   void getAllUsers(){
     emit(GetAllUserDataLoadingState());
-    if(users.isEmpty) {
+    users=[];
       FirebaseFirestore.instance.collection('users').get().then((value) {
       value.docs.forEach((e){
         if(e.data()['uId']!= model?.id)
@@ -68,7 +68,7 @@ class AppCubit extends Cubit<AppStates> {
       print(e.toString());
       emit(GetUserDataErrorState(e.toString()));
     });
-    }
+
   }
 
   File? profileImage;
@@ -115,13 +115,7 @@ class AppCubit extends Cubit<AppStates> {
       if (imageUrl != null) 'image': imageUrl,
       if (coverUrl != null) 'cover': coverUrl,
     };
-    //we cant use this to cant write if condition before cover and image and we need to update specific data
-    // UserModel model = UserModel(
-    //     bio: bio,
-    //     name: name,
-    //     cover: coverUrl,
-    //     image: imageUrl,);
-    // Update Firestore document
+    // Update FireStore document
     FirebaseFirestore.instance.collection('users').doc(userId).update(updateData).then(
           (value) {
             getUserData();
@@ -133,38 +127,6 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  //
-  // void uploadProfileImage(File image) {
-  //   FirebaseStorage.instance
-  //       .ref()
-  //       .child('users/${Uri.file(image!.path).pathSegments.last}')
-  //       .putFile(image!).then((p0) {
-  //         p0.ref.getDownloadURL().then((value) {
-  //           print(value);
-  //         },).catchError(onError);
-  //       },).catchError(onError);
-  // }
-
-  // Future<String> uploadProfileImage(File image) async {
-  //   try {
-  //     // Upload the image to Firebase Storage and get the download URL
-  //     final ref = FirebaseStorage.instance
-  //         .ref()
-  //         .child('users/${Uri.file(image.path).pathSegments.last}');
-  //
-  //     // Perform the upload
-  //     final uploadTask = await ref.putFile(image);
-  //
-  //     // Once uploaded, retrieve the download URL
-  //     String downloadUrl = await uploadTask.ref.getDownloadURL();
-  //
-  //     print(downloadUrl);
-  //     return downloadUrl;
-  //   } catch (e) {
-  //     print("Error uploading image: $e");
-  //     throw e; // You can handle the error here as needed
-  //   }
-  // }
 
   void resetProfile() {
     model = null;
