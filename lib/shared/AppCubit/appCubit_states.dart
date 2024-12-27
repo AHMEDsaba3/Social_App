@@ -8,6 +8,12 @@ class GetUserDataErrorState extends AppStates{
   final String error;
   GetUserDataErrorState(this.error);
 }
+class GetAllUserDataLoadingState extends AppStates{}
+class GetAllUserDataSuccessState extends AppStates{}
+class GetAllUserDataErrorState extends AppStates{
+  final String error;
+  GetAllUserDataErrorState(this.error);
+}
 
 class ChangeIndexState extends AppStates{}
 

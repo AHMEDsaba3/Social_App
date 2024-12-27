@@ -59,7 +59,7 @@ class ChatsPage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: horizontalUsers(context, cubit.model?.image??''),
+                            child: horizontalUsers(context, cubit.users[index].image??''),
                           );
                         },
                         separatorBuilder: (context, index) {
@@ -67,7 +67,7 @@ class ChatsPage extends StatelessWidget {
                             width: widthR(0, context),
                           );
                         },
-                        itemCount: 10),
+                        itemCount: cubit.users.length),
                   ),
                   SizedBox(
                     height: heightR(10, context),
@@ -78,13 +78,13 @@ class ChatsPage extends StatelessWidget {
                       shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return verticaUsers(context, cubit.model?.image??'', cubit.model?.name ?? '');
+                          return verticaUsers(context, cubit.users[index].image??'', cubit.users[index].name ?? '');
                         },
                         separatorBuilder: (context, index) => Padding(
                           padding:  EdgeInsets.symmetric(vertical: 10),
                           child: Container(color: Colors.grey[300],height: heightR(1, context),),
                         ),
-                        itemCount: 10),
+                        itemCount: cubit.users.length),
                   )
                 ],
               ),
@@ -97,23 +97,33 @@ class ChatsPage extends StatelessWidget {
   }
 
   Widget horizontalUsers(context, String image) {
-    return CircleAvatar(
-      radius: sizeR(33, context),
-      backgroundColor: secondColor,
-      backgroundImage: NetworkImage(image),
-    );
-  }
-  Widget verticaUsers(context, String image,String name) {
-    return  Row(
-      children: [
-        CircleAvatar(
-          radius: sizeR(29, context),
+    return InkWell(
+      onTap: () {},
+      child: CircleAvatar(
+        radius: sizeR(34, context),
+        backgroundColor: Colors.black,
+        child: CircleAvatar(
+          radius: sizeR(33, context),
           backgroundColor: secondColor,
           backgroundImage: NetworkImage(image),
         ),
-        SizedBox(width: widthR(10, context),),
-        Text('$name',style: Theme.of(context).textTheme.bodyMedium,)
-      ],
+      ),
+    );
+  }
+  Widget verticaUsers(context, String image,String name) {
+    return  InkWell(
+      onTap: () {},
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: sizeR(29, context),
+            backgroundColor: secondColor,
+            backgroundImage: NetworkImage(image),
+          ),
+          SizedBox(width: widthR(10, context),),
+          Text('$name',style: Theme.of(context).textTheme.bodyMedium,)
+        ],
+      ),
     );
   }
 }

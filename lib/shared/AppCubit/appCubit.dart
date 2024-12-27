@@ -32,6 +32,9 @@ class AppCubit extends Cubit<AppStates> {
   List<Widget> Screens = [HomePage(), ChatsPage(),ProfilePage(),SettingPage()];
 
   void changeBottomNavBar(int index) {
+    if(index == 1){
+      getAllUsers();
+    }
     currentIndex = index;
     emit(ChangeIndexState());
   }
@@ -49,6 +52,23 @@ class AppCubit extends Cubit<AppStates> {
       print(e.toString());
       emit(GetUserDataErrorState(e.toString()));
     });
+  }
+
+  List<UserModel> users=[];
+  void getAllUsers(){
+    emit(GetAllUserDataLoadingState());
+    if(users.isEmpty) {
+      FirebaseFirestore.instance.collection('users').get().then((value) {
+      value.docs.forEach((e){
+        if(e.data()['uId']!= model?.id)
+        users.add(UserModel.fromJson(e.data()));
+      });
+      emit(GetUserDataSuccessState());
+    },).catchError((e){
+      print(e.toString());
+      emit(GetUserDataErrorState(e.toString()));
+    });
+    }
   }
 
   File? profileImage;
