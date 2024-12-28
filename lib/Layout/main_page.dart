@@ -23,9 +23,10 @@ class MainPage extends StatelessWidget {
         return Scaffold(
           body: cubit.Screens[cubit.currentIndex],
           bottomNavigationBar:  CurvedNavigationBar(
+            color: cubit.isDark ? defaultDarkColor: defaultColor,
             key: _bottomNavigationKey,
-            buttonBackgroundColor: secondColor,
-            backgroundColor: Colors.black12,
+            buttonBackgroundColor: cubit.isDark ? defaultDarkColor: defaultColor,
+            backgroundColor: cubit.isDark ? Colors.white12 : Colors.black12,
             animationCurve: Curves.easeIn,
             items: cubit.bottomItem,
             animationDuration: Duration(milliseconds: 600),

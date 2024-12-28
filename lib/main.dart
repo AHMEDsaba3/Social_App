@@ -10,6 +10,7 @@ import 'package:social_app/Style/theme.dart';
 import 'package:social_app/network/local/cache_helper.dart';
 import 'package:social_app/network/remote/dio_hellper.dart';
 import 'package:social_app/shared/AppCubit/appCubit.dart';
+import 'package:social_app/shared/AppCubit/appCubit_states.dart';
 import 'package:social_app/shared/BlocObserver.dart';
 import 'package:social_app/shared/Login_cubit/loginApp_cubit.dart';
 
@@ -34,7 +35,7 @@ void main() async{
 
 class MyApp extends StatelessWidget {
   final Widget widget;
-  const MyApp({super.key,required this.widget});
+   MyApp({super.key,required this.widget});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -43,11 +44,16 @@ class MyApp extends StatelessWidget {
         BlocProvider(create:(context) => AppLoginCubit(),),
         BlocProvider(create: (context) => AppCubit()..getUserData()..getAllPosts(),)
       ],
-      child: MaterialApp(
-        title: 'Social App',
-        theme:lightTheme,
-        debugShowCheckedModeBanner: false,
-        home:widget,
+      child: BlocConsumer<AppCubit,AppStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'Social App',
+            theme:AppCubit.get(context).isDark?darkTheme:lightTheme,
+            debugShowCheckedModeBanner: false,
+            home:widget,
+          ) ;
+        },
       ),
     );
   }

@@ -14,10 +14,13 @@ import 'package:social_app/Pages/setting_page.dart';
 import 'package:social_app/models/massage_model.dart';
 import 'package:social_app/models/posts_model.dart';
 import 'package:social_app/models/user_model.dart';
+import 'package:social_app/network/local/cache_helper.dart';
 import 'package:social_app/shared/AppCubit/appCubit_states.dart';
 
 class AppCubit extends Cubit<AppStates> {
-  AppCubit() : super(InatialState()) {}
+  AppCubit() : super(InatialState()) {
+    isDark = CacheHelper.getData(key: 'isDark') ?? false;
+  }
 
   static AppCubit get(context) => BlocProvider.of(context);
 
@@ -25,7 +28,7 @@ class AppCubit extends Cubit<AppStates> {
   int currentIndex = 0;
 
   List<Widget> bottomItem = [
-    Icon(CupertinoIcons.home),
+    Icon(CupertinoIcons.home,),
     Icon(CupertinoIcons.chat_bubble),
     Icon(CupertinoIcons.person),
     Icon(CupertinoIcons.settings),
@@ -41,7 +44,7 @@ class AppCubit extends Cubit<AppStates> {
     emit(ChangeIndexState());
   }
 
-  void getUserData() {
+  Future<void> getUserData() async{
     emit(GetUserDataLoadingState());
 
     FirebaseFirestore.instance.collection('users').doc(uId).get().then(
@@ -57,7 +60,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   List<UserModel> users=[];
-  void getAllUsers(){
+  Future<void> getAllUsers()async{
     emit(GetAllUserDataLoadingState());
     users=[];
       FirebaseFirestore.instance.collection('users').get().then((value) {
@@ -99,14 +102,14 @@ class AppCubit extends Cubit<AppStates> {
       emit(pickCoverImageErrorState());
     }
   }
-  void updateUserProfile({
+  Future<void> updateUserProfile({
     required String userId,
     required String name,
     required String bio,
     required String phone,
     String? imageUrl,
     String? coverUrl,
-  }) {
+  }) async{
     emit(UpdateUserProfileLoadingState());
 
     // Prepare data to update
@@ -129,11 +132,11 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void sendMessage({
+  Future<void> sendMessage({
     required String receiverID,
     required String dateTime,
     required String text,
-}){
+})async{
     MessageModel messageModel=MessageModel(
       dateTime: dateTime,
       receiverID: receiverID,
@@ -172,9 +175,9 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   List<MessageModel> messages=[];
-  void getMessage(
-  {required String receiverId}
-      ){
+  void getMessage({required String receiverId}) {
+    if (model == null) return;
+
     FirebaseFirestore.instance
         .collection('users')
         .doc(model?.id)
@@ -184,16 +187,16 @@ class AppCubit extends Cubit<AppStates> {
         .orderBy('dateTime')
         .snapshots()
         .listen((event) {
-          messages=[];
-          event.docs.forEach((element) {
-            messages.add(MessageModel.fromJson(element.data()));
-            print(messages);
-          },);
-        },);
-    emit(getMessageSuccessState());
+      // messages=[];
+      // event.docs.forEach((element) {
+      //   messages.add(MessageModel.fromJson(element.data()));
+      // },);
+      messages = event.docs.map((e) => MessageModel.fromJson(e.data())).toList();
+      emit(getMessageSuccessState());
+    });
   }
 
-  void createPost({required String text,required String image,required String dateTime}){
+  Future<void> createPost({required String text,required String image,required String dateTime})async{
     emit(CreatePostsLoadingState());
     PostsModel postsModel =PostsModel(text: text,postImage: image,dateTime: dateTime,name: model?.name,uId: model?.id,image: model?.image);
     FirebaseFirestore.instance.collection('posts')
@@ -209,8 +212,9 @@ class AppCubit extends Cubit<AppStates> {
   List<String> postsId=[];
   List<int> likes=[];
   Map<String, bool> likedPosts = {}; // Track liked posts
+  int countPosts=0;
 
-  void getAllPosts() {
+  Future<void> getAllPosts() async{
     emit(GetAllPostsDataLoadingState());
     FirebaseFirestore.instance.collection('posts')
         .get()
@@ -229,7 +233,7 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void getPostLikes(String postId) {
+  Future<void> getPostLikes(String postId) async{
     FirebaseFirestore.instance
         .collection('posts')
         .doc(postId)
@@ -244,7 +248,19 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void likePost(String postId) {
+  Future<void> deletePost(String postId)async{
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .delete()
+        .then((value) {
+          getAllPosts();
+          emit(DeletePostSuccessState());
+        },).catchError((e){
+          emit(DeletePostErrorState(e.toString()));
+    });
+  }
+  Future<void> likePost(String postId)async {
     final isLiked = likedPosts[postId] ?? false;
 
     if (isLiked) {
@@ -275,6 +291,14 @@ class AppCubit extends Cubit<AppStates> {
         emit(makeLikeErrorState(e.toString()));
       });
     }
+  }
+
+  bool isDark=false;
+
+  void ToggleIsDark(){
+    isDark= !isDark;
+    CacheHelper.saveData(key: 'isDark', value: isDark);
+    emit(AppThemeState());
   }
 
   void resetProfile() {

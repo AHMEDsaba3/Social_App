@@ -77,7 +77,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   alignment: AlignmentDirectional.bottomCenter,
                   children: [
                     Container(
-                      color: defaultColor,
+                      color: cubit.isDark?defaultDarkColor:defaultColor,
                       height: heightR(170, context),
                     ),
                     Positioned(
@@ -116,14 +116,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Stack(
                       alignment: AlignmentDirectional.bottomEnd,
                       children: [
-                        CircleAvatar(
-                          radius: 47,
-                          backgroundColor: defaultColor,
+                        Hero(
+                          tag: 'pho',
                           child: CircleAvatar(
-                            radius: 45,
-                            backgroundImage: cubit.profileImage != null
-                                ? FileImage(cubit.profileImage!)
-                                : NetworkImage(cubit.model?.image ?? ''),
+                            radius: 47,
+                            backgroundColor:cubit.isDark?defaultDarkColor:defaultColor,
+                            child: CircleAvatar(
+                              radius: 45,
+                              backgroundImage: cubit.profileImage != null
+                                  ? FileImage(cubit.profileImage!)
+                                  : NetworkImage(cubit.model?.image ?? ''),
+                            ),
                           ),
                         ),
                         IconButton(

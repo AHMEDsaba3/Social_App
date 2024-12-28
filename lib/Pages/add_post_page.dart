@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/Constant/components.dart';
 import 'package:social_app/Constant/constans.dart';
+import 'package:social_app/Layout/main_page.dart';
 import 'package:social_app/Pages/home_page.dart';
 import 'package:social_app/shared/AppCubit/appCubit.dart';
 import 'package:social_app/shared/AppCubit/appCubit_states.dart';
@@ -20,7 +21,7 @@ class AddPostPage extends StatelessWidget {
       listener: (context, state) {
         if(state is CreatePostsSuccessState){
           AppCubit.get(context).getAllPosts();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage(),));
         }
       },
       builder: (context, state) {

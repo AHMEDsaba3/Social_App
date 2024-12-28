@@ -3,23 +3,46 @@ import 'package:flutter/services.dart';
 import 'package:social_app/Constant/constans.dart';
 
 ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
+    iconTheme: IconThemeData(color: defaultIconColor),
+    iconButtonTheme: IconButtonThemeData(
+        style:
+        ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(defaultDarkColor),
+            iconColor: WidgetStatePropertyAll(defaultIconColor))),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+            iconColor: WidgetStatePropertyAll(defaultDarkColor),
+            textStyle: WidgetStatePropertyAll(TextStyle(color:defaultDarkTextColor)))),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+            shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+            backgroundColor: WidgetStatePropertyAll(defaultDarkColor))),
     appBarTheme: AppBarTheme(
-        backgroundColor: Colors.black,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarIconBrightness: Brightness.dark,
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
+        backgroundColor: defaultDarkColor,
         titleSpacing: 20,
         elevation: 0.0,
         titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color(0xFF18191a),
+        backgroundColor:  Color(0xFF18191a),
         selectedItemColor: Colors.cyan,
         type: BottomNavigationBarType.fixed,
         elevation: 20),
     colorSchemeSeed: Colors.cyan,
-    scaffoldBackgroundColor: Colors.black,
+    scaffoldBackgroundColor: defaultDarkColor,
     useMaterial3: true,
     textTheme: TextTheme(
+        bodySmall: TextStyle(
+            fontSize: 13, fontWeight: FontWeight.normal, color: defaultDarkTextColor
+        ),
+        bodyMedium: TextStyle(
+            fontSize: 15, fontWeight: FontWeight.w500, color: defaultDarkTextColor),
         bodyLarge: TextStyle(
-            fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black)));
+            fontSize: 20, fontWeight: FontWeight.w600, color: defaultDarkTextColor)));
 ThemeData lightTheme = ThemeData(
     iconTheme: IconThemeData(color: defaultIconColor),
     iconButtonTheme: IconButtonThemeData(

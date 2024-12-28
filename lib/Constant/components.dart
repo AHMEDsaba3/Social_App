@@ -73,7 +73,7 @@ Widget defaultTextForm(
         ),
         prefixIconConstraints: BoxConstraints.tightFor(),
         suffixIcon: sufIcon != null
-            ? IconButton(onPressed: suffixPressed, icon: Icon(sufIcon))
+            ? IconButton(style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.transparent)),onPressed: suffixPressed, icon: Icon(sufIcon,))
             : null,
           floatingLabelBehavior: floatingLabelBehavior,
           contentPadding: EdgeInsets.symmetric(horizontal: 10)

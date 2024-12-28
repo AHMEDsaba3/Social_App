@@ -18,7 +18,7 @@ class ChatsPage extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         AppCubit cubit = AppCubit.get(context);
-        if(cubit.model!=null && cubit.users.isNotEmpty) {
+        if(cubit.model!=null ) {
           return Scaffold(
           body: SafeArea(
             child: SingleChildScrollView(

@@ -22,7 +22,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+      },
       builder: (context, state) {
         AppCubit cubit = AppCubit.get(context);
         if (cubit.model != null) {
@@ -160,11 +161,11 @@ class _HomePageState extends State<HomePage> {
       width: widthR(340, context),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-            color: Colors.black,
+            color: cubit.isDark?shadowDarkColor:shadowColor,
             blurRadius: 20,
             spreadRadius: -10,
             offset: Offset(10, 7))
-      ], color: secondColor, borderRadius: BorderRadius.circular(20)),
+      ], color: cubit.isDark?defaultDarkColor:defaultColor, borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -193,7 +194,17 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 Spacer(),
-                IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))
+                if(postModel.uId==cubit.model?.id)
+                PopupMenuButton(itemBuilder: (context) => [
+                  PopupMenuItem(child: Text('delete post'),value: 'delete',)
+                ],
+                onSelected: (value) {
+                  if(value=='delete'){
+                    cubit.deletePost(postId);
+                  }
+                },
+                )
+                // IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))
               ],
             ),
             SizedBox(

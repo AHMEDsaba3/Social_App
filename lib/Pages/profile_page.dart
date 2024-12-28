@@ -26,7 +26,7 @@ class ProfilePage extends StatelessWidget {
                     alignment: AlignmentDirectional.bottomCenter,
                     children: [
                       Container(
-                        color: defaultColor,
+                        color: cubit.isDark?defaultDarkColor:defaultColor,
                         height: heightR(170, context),
                       ),
                       Positioned(
@@ -50,13 +50,16 @@ class ProfilePage extends StatelessWidget {
                                 ),)),
                         ),
                       ),
-                      CircleAvatar(
-                        radius: 47,
-                        backgroundColor: defaultColor,
+                      Hero(
+                        tag: 'pho',
                         child: CircleAvatar(
-                          radius: 45,
-                          backgroundImage: NetworkImage(cubit.model?.image ??
-                              ''),
+                          radius: 47,
+                          backgroundColor:cubit.isDark?defaultDarkColor:defaultColor,
+                          child: CircleAvatar(
+                            radius: 45,
+                            backgroundImage: NetworkImage(cubit.model?.image ??
+                                ''),
+                          ),
                         ),
                       )
                     ],
@@ -71,81 +74,81 @@ class ProfilePage extends StatelessWidget {
                       .textTheme
                       .bodySmall,),
                   SizedBox(height: heightR(5, context),),
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {},
-                            child: Column(
-                              children: [
-                                Text('100', style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium),
-                                Text('Posts', style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium)
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {},
-                            child: Column(
-                              children: [
-                                Text('240', style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .labelLarge),
-                                Text('Photos', style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium)
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {},
-                            child: Column(
-                              children: [
-                                Text('10K', style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .labelLarge),
-                                Text('Followers', style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium)
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {},
-                            child: Column(
-                              children: [
-                                Text('65', style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .labelLarge),
-                                Text('Followings', style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium)
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.all(10),
+                  //   child: Row(
+                  //     children: [
+                  //       Expanded(
+                  //         child: InkWell(
+                  //           onTap: () {},
+                  //           child: Column(
+                  //             children: [
+                  //               Text('100', style: Theme
+                  //                   .of(context)
+                  //                   .textTheme
+                  //                   .bodyMedium),
+                  //               Text('Posts', style: Theme
+                  //                   .of(context)
+                  //                   .textTheme
+                  //                   .bodyMedium)
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //         child: InkWell(
+                  //           onTap: () {},
+                  //           child: Column(
+                  //             children: [
+                  //               Text('240', style: Theme
+                  //                   .of(context)
+                  //                   .textTheme
+                  //                   .bodyMedium),
+                  //               Text('Photos', style: Theme
+                  //                   .of(context)
+                  //                   .textTheme
+                  //                   .bodyMedium)
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //         child: InkWell(
+                  //           onTap: () {},
+                  //           child: Column(
+                  //             children: [
+                  //               Text('10K', style: Theme
+                  //                   .of(context)
+                  //                   .textTheme
+                  //                   .bodyMedium),
+                  //               Text('Followers', style: Theme
+                  //                   .of(context)
+                  //                   .textTheme
+                  //                   .bodyMedium)
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //         child: InkWell(
+                  //           onTap: () {},
+                  //           child: Column(
+                  //             children: [
+                  //               Text('65', style: Theme
+                  //                   .of(context)
+                  //                   .textTheme
+                  //                   .bodyMedium),
+                  //               Text('Followings', style: Theme
+                  //                   .of(context)
+                  //                   .textTheme
+                  //                   .bodyMedium)
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -174,7 +177,7 @@ class ProfilePage extends StatelessWidget {
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
                                               5))),
-                                  child: Icon(Icons.edit),)
+                                  child: Icon(Icons.edit,color: defaultIconColor,),)
                             ),
                           ],
                         ),

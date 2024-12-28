@@ -18,12 +18,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    bool isPasswordVisible = false;
+
     return BlocConsumer<AppLoginCubit, AppLoginStates>(
         listener: (context, state) {
           if (state is AppLoginSuccessState) {
@@ -53,16 +54,19 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/social logo.png',
-                  height: heightR(200, context),
-                  width: widthR(200, context),
+                Hero(
+                  tag: 'logo',
+                  child: Image.asset(
+                    'assets/social logo.png',
+                    height: heightR(200, context),
+                    width: widthR(200, context),
+                  ),
                 ),
                 Container(
                   width: widthR(350, context),
                   height: heightR(430, context),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppCubit.get(context).isDark?defaultDarkColor:defaultColor,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.5),
