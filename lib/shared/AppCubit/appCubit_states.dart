@@ -33,3 +33,27 @@ class sendMessageErrorState extends AppStates{}
 
 class getMessageSuccessState extends AppStates{}
 class getMessageErrorState extends AppStates{}
+
+class makeLikeSuccessState extends AppStates{}
+class makeLikeErrorState extends AppStates{
+  final String error;
+  makeLikeErrorState(this.error);
+}
+
+class GetAllPostsDataLoadingState extends AppStates{}
+class GetAllPostsDataSuccessState extends AppStates{}
+class GetAllPostsDataErrorState extends AppStates{
+  final String error;
+  GetAllPostsDataErrorState(this.error);
+}
+class CreatePostsLoadingState extends AppStates{}
+class CreatePostsSuccessState extends AppStates{}
+class CreatePostsErrorState extends AppStates{
+  final String error;
+  CreatePostsErrorState(this.error);
+}
+class GetPostLikesSuccessState extends AppStates{}
+class GetPostLikesErrorState extends AppStates{
+  final String error;
+  GetPostLikesErrorState(this.error);
+}
