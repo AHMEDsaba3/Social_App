@@ -47,6 +47,7 @@ dependencies:
   curved_navigation_bar: ^1.0.6
   image_picker: ^1.1.2
   firebase_storage: ^12.3.7
+  flutter_launcher_icons: ^0.14.2
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +59,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
-
+flutter_launcher_icons:
+  image_path: "assets/app icon.png"
+  android: true # can specify file name here e.g. "ic_launcher"
+  ios: true # can specify file name here e.g. "My-Launcher-Icon"
+  adaptive_icon_background: "#ffffff" # only available for Android 8.0 devices and above
+  adaptive_icon_foreground: "assets/app icon.png" # only available for Android 8.0 devices and above
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
