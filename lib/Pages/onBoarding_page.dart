@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:social_app/Constant/components.dart';
 import 'package:social_app/Constant/constans.dart';
 import 'package:social_app/Pages/login_page.dart';
 import 'package:social_app/network/local/cache_helper.dart';
+import 'package:social_app/shared/AppCubit/appCubit.dart';
+import 'package:social_app/shared/AppCubit/appCubit_states.dart';
 
 class CustomClipPath extends CustomClipper<Path> {
   @override
@@ -64,64 +67,69 @@ class _OnBoardPageState extends State<OnBoardingPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Expanded(
-                child: PageView.builder(
-                  controller: PageViewController,
-                  onPageChanged: (value) {
-                    if(value == Boarding.length -1){
-                      setState(() {
-                        isLast=true;
-                      });
-                    }else{
-                      setState(() {
-                        isLast=false;
-                      });
-                    }
-                  },
-                  itemBuilder: (context, index) {
-                    return OnBoardingWidget(Boarding[index]);
-                  },
-                  physics: BouncingScrollPhysics(),
-                  itemCount: Boarding.length,
-                )),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  SmoothPageIndicator(
-                    controller: PageViewController, // PageController
-                    count: Boarding.length,
-                    effect: WormEffect(
-                        type: WormType.thin,
-                        dotHeight: heightR(10, context),
-                        dotWidth: widthR(10, context),
-                        spacing: 5,
-                        activeDotColor: defaultColor), // your preferred effect
-                  ),
-                  Spacer(),
-                  FloatingActionButton(
-                    backgroundColor: defaultColor,
-                    child: Icon(Icons.arrow_forward_ios,color: Colors.white,),
-                    onPressed: () {
-                      if(isLast==true){
-                        Submit();
-                      }else{
-                        PageViewController.nextPage(
-                            duration: Duration(milliseconds: 750),
-                            curve: Curves.fastLinearToSlowEaseIn);
-                      }
+    return BlocConsumer<AppCubit,AppStates>(
+      listener:(context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+            backgroundColor: AppCubit.get(context).isDark?Colors.blueAccent:Colors.cyan,
+            body: Column(
+              children: [
+                Expanded(
+                    child: PageView.builder(
+                      controller: PageViewController,
+                      onPageChanged: (value) {
+                        if(value == Boarding.length -1){
+                          setState(() {
+                            isLast=true;
+                          });
+                        }else{
+                          setState(() {
+                            isLast=false;
+                          });
+                        }
+                      },
+                      itemBuilder: (context, index) {
+                        return OnBoardingWidget(Boarding[index]);
+                      },
+                      physics: BouncingScrollPhysics(),
+                      itemCount: Boarding.length,
+                    )),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      SmoothPageIndicator(
+                        controller: PageViewController, // PageController
+                        count: Boarding.length,
+                        effect: WormEffect(
+                            type: WormType.thin,
+                            dotHeight: heightR(10, context),
+                            dotWidth: widthR(10, context),
+                            spacing: 5,
+                            activeDotColor: AppCubit.get(context).isDark?defaultDarkColor:defaultColor), // your preferred effect
+                      ),
+                      Spacer(),
+                      FloatingActionButton(
+                        backgroundColor:AppCubit.get(context).isDark?defaultDarkColor:defaultColor ,
+                        child: Icon(Icons.arrow_forward_ios,color: defaultIconColor,),
+                        onPressed: () {
+                          if(isLast==true){
+                            Submit();
+                          }else{
+                            PageViewController.nextPage(
+                                duration: Duration(milliseconds: 750),
+                                curve: Curves.fastLinearToSlowEaseIn);
+                          }
 
-                    },
-                  )
-                ],
-              ),
-            )
-          ],
-        ));
+                        },
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )) ;
+      },
+    );
   }
 
   Widget OnBoardingWidget(BoardingModel model) {
@@ -134,7 +142,7 @@ class _OnBoardPageState extends State<OnBoardingPage> {
               child: Container(
                 height: MediaQuery.of(context).size.height * 65 / 100,
                 width: double.infinity,
-                color: defaultColor,
+                color: AppCubit.get(context).isDark?defaultDarkColor:defaultColor,
               ),
               clipper: CustomClipPath(),
             ),
@@ -147,7 +155,7 @@ class _OnBoardPageState extends State<OnBoardingPage> {
               top:heightR(30, context),
               left: widthR(320, context),
               child: TextButton(
-                  onPressed: Submit, child: Text('Skip',style: TextStyle(color: Colors.white),)),
+                  onPressed: Submit, child: Text('Skip',style: TextStyle(color: defaultIconColor),)),
             )
           ],
         ),
@@ -160,17 +168,11 @@ class _OnBoardPageState extends State<OnBoardingPage> {
             children: [
               Text(
                 model.title,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: sizeR(30, context),
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               Text(
                 model.body,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: sizeR(10, context),
-                ),
+                style: Theme.of(context).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),
             ],
